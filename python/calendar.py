@@ -3,7 +3,6 @@ import datetime
 
 MONTH_NAME = {1: "January", 2: "February", 3: "March", 4: "April", 5: "May", 6: "June", 7: "July", 8: "August", 9: "September", 10: "October", 11: "November", 12: "December"}
 WEEK_NAME = ["月", "火", "水", "木", "金", "土", "日"]
-DAY_LIST = [" 1"," 2"," 3"," 4"," 5"," 6"," 7"," 8"," 9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31"]
 
 def get_options():
     """
@@ -12,8 +11,9 @@ def get_options():
         argparse.Namespace: コマンドライン引数
     """
     parser = argparse.ArgumentParser()
-    parser.add_argument("-m", type=int, default=datetime.date.today().month)
-    parser.add_argument("-y", type=int, default=datetime.date.today().year)
+    today = datetime.date.today()
+    parser.add_argument("-m", type=int, default=today.month)
+    parser.add_argument("-y", type=int, default=today.year)
     args = parser.parse_args()
     return args
 
@@ -72,26 +72,23 @@ def print_calendar(month, year):
     first_day_weekday = first_day.weekday()
     
     days_count = get_days_in_month(year, month)
-    days_list = DAY_LIST[:days_count]
+    date_display = "   " * first_day_weekday
+    current_weekday = first_day_weekday
     
-    first_week_margin = "   " * first_day_weekday
-    first_week_days_count = 7 - first_day_weekday
-    
-    weeks = []
-    weeks.append(first_week_margin + " ".join(days_list[:first_week_days_count]))
-    
-    for week_num in range(1, 6):
-        start_index = first_week_days_count + (week_num - 1) * 7
-        end_index = min(start_index + 7, days_count)
+    for day in range(1, days_count + 1):
+        # 日付が1桁表示の場合は前にもスペースを追加して揃える
+        date_display += f" {day} " if day < 10 else f"{day} "
         
-        if start_index < days_count:
-            week_str = " ".join(days_list[start_index:end_index])
-            weeks.append(week_str)
-    
+        current_weekday += 1
+        
+        if current_weekday == 7:
+            current_weekday = 0
+            date_display += "\n"
+
     print(f"{MONTH_NAME[month]} {year}")
     print(f"{' '.join(WEEK_NAME)}")
-    for week in weeks:
-        print(week)
+    print(date_display)
+
 
 if __name__ == "__main__":
     args = get_options()
