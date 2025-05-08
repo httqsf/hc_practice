@@ -37,7 +37,7 @@ class VendingMachine:
             self._items[juice.name].extend([juice for _ in range(quantity)])
         else:
             self._items[juice.name] = [juice for _ in range(quantity)]
-        print(f"{juice.name}が{quantity}個追加されました")
+        return len(self._items[juice.name])
     
     def pop_item(self, name):
         if self.has_item(name):
@@ -49,34 +49,65 @@ class VendingMachine:
 
     def buy(self, suica, name):
         if not self.has_item(name):
-            print(f"{name}は売り切れです")
-            return False
+            return None
             
         price = self.get_item_price(name)
-        if suica.balance >= price:
-            suica.pay(price)
+        if suica.pay(price):
             self.pop_item(name)
             self.add_sales(price)
-            print(f"{name}が購入されました")
-            print(f"在庫: {len(self._items[name])}")
             return True
-        else:
-            print(f"{name}を購入できませんでした")
-            return False
+        return False
 
 def test_buy():
     vm = VendingMachine()
     suica1 = suica.Suica()
-    suica1.charge(10)
-    suica1.charge(1000)
-    vm.buy(suica1, "ペプシ")
-    print(f"残高: {suica1.balance}")
-    print(f"売上: {vm.sales}")
-    vm.restock_item(juice.Juice("ペプシ", 150), 5)
-    print(f"購入可能なラインナップ: {vm.get_item_names()}")
-    vm.buy(suica1, "いろはす")
-    print(f"残高: {suica1.balance}")
-    print(f"売上: {vm.sales}")
+    
+    # Suicaにチャージ
+    print("\nチャージ操作:")
+    if suica1.charge(10):
+        print(f"10円チャージしました。残高: {suica1.balance}円")
+    else:
+        print("チャージに失敗しました")
+    
+    if suica1.charge(1000):
+        print(f"1000円チャージしました。残高: {suica1.balance}円")
+    else:
+        print("チャージに失敗しました")
+    
+    # ペプシを購入
+    print("\nペプシの購入:")
+    result = vm.buy(suica1, "ペプシ")
+    if result is None:
+        print("ペプシは売り切れです")
+    elif result:
+        print("ペプシを購入しました")
+        print(f"在庫: {len(vm.items['ペプシ'])}個")
+        print(f"残高: {suica1.balance}円")
+        print(f"売上: {vm.sales}円")
+    else:
+        print("ペプシを購入できませんでした")
+    
+    # 在庫補充
+    print("\n在庫補充:")
+    current_stock = vm.restock_item(juice.Juice("ペプシ", 150), 5)
+    print(f"ペプシが5個追加されました")
+    print(f"現在の在庫: {current_stock}個")
+    
+    # 商品ラインナップの確認
+    print(f"\n購入可能なラインナップ: {vm.get_item_names()}")
+    
+    # いろはすを購入
+    print("\nいろはすの購入:")
+    result = vm.buy(suica1, "いろはす")
+    if result is None:
+        print("いろはすは売り切れです")
+    elif result:
+        print("いろはすを購入しました")
+        print(f"在庫: {len(vm.items['いろはす'])}個")
+        print(f"残高: {suica1.balance}円")
+        print(f"売上: {vm.sales}円")
+    else:
+        print("いろはすを購入できませんでした")
 
 if __name__ == "__main__":
     test_buy()
