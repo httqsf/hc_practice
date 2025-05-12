@@ -7,17 +7,13 @@ class Suica:
         return self._balance
 
     def charge(self, amount):
-        if amount >= 100:
-            self._balance += amount
-            return True
-        else:
-            return False
+        if amount <= 100:
+            raise ValueError("100円以上のチャージが必要です")
+        self._balance += amount
 
     def pay(self, amount):
-        if self._balance >= amount:
-            self._balance -= amount
-            return True 
-        else:
-            return False
+        if self._balance < amount:
+            raise ValueError("残高が不足しています")
+        self._balance -= amount
 
     

@@ -1,11 +1,10 @@
-import juice
-import suica
+from juice import Juice
 
 class VendingMachine:
     def __init__(self):
-        pepsi = juice.Juice("ペプシ", 150)
-        monster = juice.Juice("モンスター", 230)
-        water = juice.Juice("いろはす", 120)
+        pepsi = Juice("ペプシ", 150)
+        monster = Juice("モンスター", 230)
+        water = Juice("いろはす", 120)
         self._items = {
             pepsi.name:[pepsi for _ in range(5)],
             monster.name:[monster for _ in range(5)],
@@ -52,62 +51,9 @@ class VendingMachine:
             return None
             
         price = self.get_item_price(name)
-        if suica.pay(price):
+        try:
+            suica.pay(price)
             self.pop_item(name)
             self.add_sales(price)
-            return True
-        return False
-
-def test_buy():
-    vm = VendingMachine()
-    suica1 = suica.Suica()
-    
-    # Suicaにチャージ
-    print("\nチャージ操作:")
-    if suica1.charge(10):
-        print(f"10円チャージしました。残高: {suica1.balance}円")
-    else:
-        print("チャージに失敗しました")
-    
-    if suica1.charge(1000):
-        print(f"1000円チャージしました。残高: {suica1.balance}円")
-    else:
-        print("チャージに失敗しました")
-    
-    # ペプシを購入
-    print("\nペプシの購入:")
-    result = vm.buy(suica1, "ペプシ")
-    if result is None:
-        print("ペプシは売り切れです")
-    elif result:
-        print("ペプシを購入しました")
-        print(f"在庫: {len(vm.items['ペプシ'])}個")
-        print(f"残高: {suica1.balance}円")
-        print(f"売上: {vm.sales}円")
-    else:
-        print("ペプシを購入できませんでした")
-    
-    # 在庫補充
-    print("\n在庫補充:")
-    current_stock = vm.restock_item(juice.Juice("ペプシ", 150), 5)
-    print(f"ペプシが5個追加されました")
-    print(f"現在の在庫: {current_stock}個")
-    
-    # 商品ラインナップの確認
-    print(f"\n購入可能なラインナップ: {vm.get_item_names()}")
-    
-    # いろはすを購入
-    print("\nいろはすの購入:")
-    result = vm.buy(suica1, "いろはす")
-    if result is None:
-        print("いろはすは売り切れです")
-    elif result:
-        print("いろはすを購入しました")
-        print(f"在庫: {len(vm.items['いろはす'])}個")
-        print(f"残高: {suica1.balance}円")
-        print(f"売上: {vm.sales}円")
-    else:
-        print("いろはすを購入できませんでした")
-
-if __name__ == "__main__":
-    test_buy()
+        except ValueError as e:
+            print(e)
