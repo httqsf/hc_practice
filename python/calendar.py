@@ -77,8 +77,7 @@ def print_calendar(month, year):
     
     for day in range(1, days_count + 1):
         # 日付が1桁表示の場合は前にもスペースを追加して揃える
-        date_display += f" {day} " if day < 10 else f"{day} "
-        
+        date_display += f"{str(day).rjust(2)} "
         current_weekday += 1
         
         if current_weekday == 7:
