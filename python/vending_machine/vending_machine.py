@@ -53,7 +53,8 @@ class VendingMachine:
         price = self.get_item_price(name)
         try:
             suica.pay(price)
-            self.pop_item(name)
+            purchased_item = self.pop_item(name)
             self.add_sales(price)
-        except ValueError as e:
-            print(e)
+            return purchased_item
+        except ValueError:
+            raise

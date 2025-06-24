@@ -23,7 +23,11 @@ def test_buy():
     
     # ペプシを購入
     print("\nペプシの購入:")
-    result = vm.buy(suica1, "ペプシ")
+    try:
+        result = vm.buy(suica1, "ペプシ")
+    except ValueError as e:
+        print(e)
+        
     if result is None:
         print("ペプシは売り切れです")
     elif result:
@@ -45,7 +49,11 @@ def test_buy():
     
     # いろはすを購入
     print("\nいろはすの購入:")
-    result = vm.buy(suica1, "いろはす")
+    try:
+        result = vm.buy(suica1, "いろはす")
+    except ValueError as e:
+        print(e)
+        
     if result is None:
         print("いろはすは売り切れです")
     elif result:
