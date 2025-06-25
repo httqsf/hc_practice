@@ -1,0 +1,134 @@
+@startuml twitter
+package "ユーザー" #LightBlue {
+  entity "users" as users {
+    + id : int <<PK>>
+    --
+    * email : string <<unique>>
+    * name : string <<unique>>
+    * phone_number : string <<unique>>
+      introduction : string
+      location : string
+      website_url : string
+      birth_date : date
+      profile_image_url : string
+      icon_image_url : string
+      created_at : datetime
+      updated_at : datetime
+  }
+}
+
+package "フォロー" #LightSteelBlue {
+  entity "follows" as follows {
+    + id : int <<PK>>
+    --
+    # follower_id : int <<FK(users)>>
+    # followee_id : int <<FK(users)>>
+      created_at : datetime
+      updated_at : datetime
+  }
+}
+
+package "ツイート" #LightGreen {
+  entity "tweets" as tweets {
+    + id : int <<PK>>
+    --
+    # user_id : int <<FK(users)>>
+      content : string
+      image_url : string
+      created_at : datetime
+      updated_at : datetime
+  }
+
+  entity "bookmarks" as bookmarks {
+    + id : int <<PK>>
+    --
+    # user_id : int <<FK(users)>>
+    # tweet_id : int <<FK(tweets)>>
+      created_at : datetime
+      updated_at : datetime
+  }
+  entity "likes" as likes {
+    + id : int <<PK>>
+    --
+    # user_id : int <<FK(users)>>
+    # tweet_id : int <<FK(tweets)>>
+      created_at : datetime
+      updated_at : datetime
+  }
+  entity "retweets" as retweets {
+    + id : int <<PK>>
+    --
+    # user_id : int <<FK(users)>>
+    # tweet_id : int <<FK(tweets)>>
+      created_at : datetime
+      updated_at : datetime
+  }
+}  
+
+package "通知" #lightyellow {
+  entity "notifications" as notifications {
+    + id : int <<PK>>
+    --
+    # from_user_id: int <<FK(users)>>
+    # to_user_id: int <<FK(users)>>
+    # like_id : int <<FK(likes)>>
+    # follow_id : int <<FK(follows)>>
+    # retweet_id : int <<FK(retweets)>>
+      content : string
+      created_at : datetime
+      updated_at : datetime
+  }
+}
+
+package "DM" #LightCyan {
+  entity "messages_groups" as messages_groups {
+    + id : int <<PK>>
+    --
+      created_at : datetime
+      updated_at : datetime
+  }
+  entity "message_members" as message_members {
+    + id : int <<PK>>
+    --
+    # user_id : int <<FK(users)>>
+    # group_id : int <<FK(messages_groups)>>
+      created_at : datetime
+      updated_at : datetime
+  }
+  entity "messages" as messages {
+    + id : int <<PK>>
+    --
+    # user_id : int <<FK(users)>>
+    # group_id : int <<FK(messages_groups)>>
+      content : string
+      created_at : datetime
+      updated_at : datetime
+  }
+}
+' --o| // 0か1のみ関連する
+' --|| // 必ず1つ関連する
+' --o{ // 0以上関連する(多)
+' --|{ // 1以上関連する(多)
+
+users ||--o{ tweets
+users ||--o{ bookmarks
+users ||--o{ likes
+users ||--o{ retweets
+users ||--o{ follows
+users ||--o{ messages
+users ||--o{ notifications
+users ||--o{ message_members
+
+messages_groups ||--o{messages
+messages_groups ||--o{message_members
+
+tweets ||--o{ likes
+tweets ||--o{ retweets
+tweets ||--o{ bookmarks
+
+follows ||-l-|| notifications
+retweets ||-d-|| notifications
+likes ||-d-|| notifications
+
+
+@enduml
