@@ -1,33 +1,34 @@
 const WEEK_NAME = ["日", "月", "火", "水", "木", "金", "土"];
 
 function main() {
-    const options = get_options();
-    const {year, month} = get_year_month(options);
-    print_calendar(year, month);
+    const args = parseArguments(process.argv);
+    const {year, month} = getYearMonth(args);
+    printCalendar(year, month);
 }
 
-function get_year_month(options) {
-    const now = new Date();
-    const year = now.getFullYear();
-    let month = now.getMonth();
-    
+function parseArguments(args) {
+    const options = args[2];
     if (options === "-m") {
-        const inputMonth = parseInt(process.argv[3]);
+        const inputMonth = parseInt(args[3]);
         if (inputMonth < 1 || inputMonth > 12) {
             console.error("月の指定は１〜１２の間にしてください。");
             process.exit(1);
         }
         month = inputMonth - 1;
+    }else {
+        month = new Date().getMonth();
     }
-    
+    return month;
+}
+
+function getYearMonth(args) {
+    const year = new Date().getFullYear();
+    const month = args;
     return {year, month};
 }
 
-function get_options() {
-    return process.argv[2];
-}
 
-function print_calendar(year, month) {    
+function printCalendar(year, month) {    
     const monthDisplay = month + 1;
     const monthYear = `${monthDisplay}月 ${year}`.padStart(13, " ");
     const firstDayOfWeek = new Date(year, month, 1).getDay();
