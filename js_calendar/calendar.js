@@ -7,9 +7,10 @@ function main() {
 }
 
 function parseArguments(args) {
-    const options = args[2];
-    if (options === "-m") {
-        const inputMonth = parseInt(args[3]);
+    let month
+    const [, , option, value] = args;
+    if (option === "-m") {
+        const inputMonth = parseInt(value);
         if (inputMonth < 1 || inputMonth > 12) {
             console.error("月の指定は１〜１２の間にしてください。");
             process.exit(1);
