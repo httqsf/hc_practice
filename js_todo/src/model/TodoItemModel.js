@@ -1,12 +1,11 @@
 let todoIdx = 0;
 
-class TodolistItems {
-    
-    /** @type {number} TodolistItemsのID**/
+export class TodoItemModel {
+    /** @type {number} TodoItemModelのID**/
     id;
-    /** @type {string} TodolistItemsのタイトル**/
+    /** @type {string} TodoItemModelのタイトル**/
     title;
-    /** @type {boolean} TodolistItemsの完了状態**/
+    /** @type {boolean} TodoItemModelの完了状態**/
     completed;
 
     constructor(title, completed) {

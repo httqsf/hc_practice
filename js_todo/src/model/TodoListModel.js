@@ -1,28 +1,32 @@
-import { EventNotify } from "../EventNotify";
-import { TodolistItems } from "./TodolistItems";
+import { EventNotify } from "../EventNotify.js";
+import { TodoItemModel } from "./TodoItemModel.js";
 
-class TodolistModel extends EventNotify {
+export class TodolistModel extends EventNotify {
     #Items;
 
     /**  
-     * @param {TodolistItems[]} items TodolistItemsの配列
+     * @param {TodoItemModel[]} items TodoItemModelの配列
      */
     constructor(items=[]) {
         super();
         this.#Items = items;
     }
 
+    getItems(){
+        return this.#Items
+    }
+
     /**
-     * TodolistItemsの数を取得
-     * @returns {number} TodolistItemsの数
+     * TodoItemModelの数を取得
+     * @returns {number} TodoItemModelの数
      */
     getTotalitem(){
         return this.#Items.length;
     }
 
     /**
-     * 完了したTodolistItemsの配列を取得
-     * @returns {TodolistItems[]} 完了したTodolistItemsの配列
+     * 完了したTodoItemModelの配列を取得
+     * @returns {TodoItemModel[]} 完了したTodoItemModelの配列
      */
     getCompletedItem(){
         return this.#Items.filter(item => item.completed);
@@ -36,12 +40,31 @@ class TodolistModel extends EventNotify {
         return this.#Items.filter(item => !item.completed);
     }
 
+    onChange(listener){
+        this.addEventListener("change", listener);
+    }
+
     /**
      * 
-     * @param {TodolistItems} todoItem 
+     * @param {TodoItemModel} todoItem TodoItemModel
      */
     addTodo(todoItem){
         this.#Items.push(todoItem);
+        console.log("Todo added, notifying change"); // デバッグ用
+        console.log("Current items:", this.#Items); // デバッグ用
+        this.notify("change");
+    }
+
+    updateTodo({id, completed}){
+        const targetItem = this.#Items.find(item => item.id === id);
+        if (targetItem){
+            targetItem.completed = completed;
+            this.notify("change");
+        }
+    }
+
+    deleteTodo({id}){
+        this.#Items = this.#Items.filter(item => item.id !== id)
         this.notify("change");
     }
 }

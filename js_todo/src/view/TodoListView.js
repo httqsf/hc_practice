@@ -16,7 +16,7 @@ export class TodoListView {
             const todoItemView = new TodoItemView();
             const todoItemElement = todoItemView.createElement(todoItem, {
                 onDeleteTodo,
-                onUpdateTodo
+                onUpdateTodo,
             });
             todoListElement.appendChild(todoItemElement);
         });
