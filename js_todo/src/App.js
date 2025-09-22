@@ -1,3 +1,8 @@
+import { TodolistModel } from "./model/TodolistModel.js";
+import { TodoListView } from "./view/TodoListView.js";
+import { TodoItemModel } from "./model/TodoItemModel.js";
+import { render } from "./view/html_utils.js";
+
 export class App {
     #todolistModel = new TodolistModel();
     #todoListView = new TodoListView();
