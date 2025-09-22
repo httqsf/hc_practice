@@ -19,13 +19,26 @@ export class App {
      * @param {{id: number}} id 
      */
     handleDelete({id}){
-        this.#todolistModel.deleteTodo({id})
+        // ビジネスロジック: 削除の確認
+        if (confirm("本当によろしいですか？")) {
+            this.#todolistModel.deleteTodo({id});
+        }
     }
 
     handleUpdate({id, completed}){
-        this.#todolistModel.updateTodo({id, completed})
+        this.#todolistModel.updateTodo({id, completed});
     }
-    
+
+
+    updateTaskCounter(){
+        const totalCount = this.#todolistModel.getTotalitem();
+        const completedCount = this.#todolistModel.getCompletedItem().length;
+        const uncompletedCount = this.#todolistModel.getUncompletedItem().length;
+        
+        const counterElement = document.getElementById("js-todo-count");
+        counterElement.textContent = `全てのタスク：${totalCount} 完了済み：${completedCount} 未完了：${uncompletedCount}`;
+    }
+
     /**
      * Appをマウント
      */
@@ -45,6 +58,7 @@ export class App {
                 }
             });
             render(todoListElement, containerElement);
+            this.updateTaskCounter();
         }
         this.#formSubmitHandler = (event) => {
             event.preventDefault();
@@ -56,5 +70,8 @@ export class App {
         }
         this.#todolistModel.onChange(this.#modelChangeHandler);
         this.#formElement.addEventListener("submit", this.#formSubmitHandler);
+        
+        // 初期表示時にカウンターを更新
+        this.updateTaskCounter();
     }
 }
