@@ -1,8 +1,3 @@
-import { TodolistModel } from "./model/TodoListModel.js";
-import { TodoListView } from "./view/TodoListView.js";
-import { TodoItemModel } from "./model/TodoItemModel.js";
-import { render } from "./view/html_utils.js";
-
 export class App {
     #todolistModel = new TodolistModel();
     #todoListView = new TodoListView();
@@ -11,7 +6,6 @@ export class App {
     #modelChangeHandler = null;
 
     handleAdd(title){
-        console.log("Adding todo:", title); // デバッグ用
         this.#todolistModel.addTodo(new TodoItemModel(title, false))
     }
 
@@ -36,9 +30,7 @@ export class App {
         const containerElement = document.getElementById("js-todo-list");
 
         this.#modelChangeHandler = () => {
-            console.log("Model change handler called"); // デバッグ用
             const todoItems = this.#todolistModel.getItems();
-            console.log("Todo items:", todoItems); // デバッグ用
             const todoListElement = this.#todoListView.createElement(todoItems, {
                 onUpdateTodo: ({id, completed}) => {
                     this.handleUpdate({id, completed});

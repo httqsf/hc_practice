@@ -50,8 +50,6 @@ export class TodolistModel extends EventNotify {
      */
     addTodo(todoItem){
         this.#Items.push(todoItem);
-        console.log("Todo added, notifying change"); // デバッグ用
-        console.log("Current items:", this.#Items); // デバッグ用
         this.notify("change");
     }
 
