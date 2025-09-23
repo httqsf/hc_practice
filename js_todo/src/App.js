@@ -9,6 +9,14 @@ export class App {
     #formElement = document.getElementById("js-form");
     #inputElement = document.getElementById("js-form-input");
     #containerElement = document.getElementById("js-todo-list");
+    
+    /**
+     * TodoItemModelを追加
+     * @param {string} title 
+     */
+    #handleAdd(title){
+        this.#todolistModel.addTodo(new TodoItemModel(title, false))
+    }
 
     /**
      * フォームの送信を処理するハンドラー
@@ -23,13 +31,6 @@ export class App {
         this.#inputElement.value = "";
     }
 
-    /**
-     * TodoItemModelを追加
-     * @param {string} title 
-     */
-    #handleAdd(title){
-        this.#todolistModel.addTodo(new TodoItemModel(title, false))
-    }
 
     /**
      * TodoItemModelを削除

@@ -71,7 +71,7 @@ form {
   font-style: italic;
 }
 
-.save-button {
+.add-button {
   background: linear-gradient(45deg, #667eea, #764ba2);
   color: white;
   border: none;
@@ -84,12 +84,12 @@ form {
   box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
 }
 
-.save-button:hover {
+.add-button:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
 }
 
-.save-button:active {
+.add-button:active {
   transform: translateY(0);
   box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
 }
@@ -100,8 +100,9 @@ form {
   overflow-y: auto;
 }
 
-/* Todo Item Styles */
+/* todo-displayとtodo-editに共通のスタイル */
 .todo-item {
+  width: 100%;
   padding: 20px 30px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
   display: flex;
@@ -164,7 +165,7 @@ form {
   text-decoration: line-through;
 }
 
-.todo-edit {
+.edit {
   background: transparent;
   border: none;
   color: #667eea;
@@ -180,7 +181,7 @@ form {
   font-weight: 500;
 }
 
-.todo-edit:hover {
+.edit:hover {
   background: rgba(102, 126, 234, 0.05);
   transform: scale(1.05);
 }
@@ -207,6 +208,70 @@ form {
   transform: scale(1.05);
 }
 
+/* Edit Input Field */
+.todo-edit-input {
+  flex: 1;
+  padding: 0;
+  font-size: 16px;
+  line-height: 1.4;
+  color: #333;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-family: inherit;
+  border-bottom: 2px solid #667eea;
+  border-radius: 0;
+  transition: all 0.3s ease;
+}
+
+.todo-edit-input:focus {
+  border-bottom-color: #764ba2;
+}
+
+/* Save Button */
+.save {
+  background: transparent;
+  border: none;
+  color: #28a745;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 6px;
+  opacity: 1;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+}
+
+.save:hover {
+  background: rgba(40, 167, 69, 0.05);
+  transform: scale(1.05);
+}
+
+/* Cancel Button */
+.cancel {
+  background: transparent;
+  border: none;
+  color: #6c757d;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 6px;
+  opacity: 1;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+}
+
+.cancel:hover {
+  background: rgba(108, 117, 125, 0.05);
+  transform: scale(1.05);
+}
+
 /* Footer */
 .footer {
   padding: 20px 30px;
@@ -215,17 +280,6 @@ form {
   color: #666;
   font-size: 14px;
   font-weight: 500;
-}
-
-/* Empty State */
-.todo-list:empty::before {
-  content: "まだTodoがありません。上の入力欄から新しいTodoを追加してください。";
-  display: block;
-  text-align: center;
-  padding: 40px 30px;
-  color: #999;
-  font-style: italic;
-  background: rgba(0, 0, 0, 0.02);
 }
 
 /* Responsive Design */
