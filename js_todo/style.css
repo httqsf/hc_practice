@@ -159,7 +159,8 @@ form {
   transition: all 0.3s ease;
 }
 
-.todo-text s {
+/* チェックボックスがチェックされた時に隣接するテキストに打ち消し線を適用 */
+.checkbox:checked ~ .todo-text {
   color: #999;
   opacity: 0.6;
   text-decoration: line-through;
