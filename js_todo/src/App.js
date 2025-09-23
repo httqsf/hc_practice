@@ -1,4 +1,4 @@
-import { TodolistModel } from "./model/TodolistModel.js";
+import { TodolistModel } from "./model/TodoListModel.js";
 import { TodoListView } from "./view/TodoListView.js";
 import { TodoItemModel } from "./model/TodoItemModel.js";
 import { render } from "./view/html_utils.js";
@@ -7,6 +7,8 @@ export class App {
     #todolistModel = new TodolistModel();
     #todoListView = new TodoListView();
     #formElement = document.getElementById("js-form");
+    #inputElement = document.getElementById("js-form-input");
+    #containerElement = document.getElementById("js-todo-list");
 
     /**
      * フォームの送信を処理するハンドラー
@@ -14,11 +16,11 @@ export class App {
      */
     #handleSubmit = (event) => {
         event.preventDefault();
-        if (inputElement.value.trim() === "") {
+        if (this.#inputElement.value.trim() === "") {
             return;
         }
-        this.#handleAdd(inputElement.value);
-        inputElement.value = "";
+        this.#handleAdd(this.#inputElement.value);
+        this.#inputElement.value = "";
     }
 
     /**
@@ -73,7 +75,7 @@ export class App {
                 this.#handleDelete({id});
             },
         });
-        render(todoListElement, containerElement);
+        render(todoListElement, this.#containerElement);
         this.#updateTaskCounter();
     }
 
