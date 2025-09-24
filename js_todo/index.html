@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Todo App</title>
+    <!-- 1. CSSファイルを読み込み -->
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <!-- 2. class属性をCSSのために指定 -->
+    <div class="todoapp">
+      <!-- 3. id属性をJavaScriptのために指定 -->
+      <form id="js-form">
+        <input
+          id="js-form-input"
+          class="new-todo"
+          type="text"
+          placeholder="What need to be done?"
+          autocomplete="off"
+        />
+        <button type="submit" class="add-button">追加</button>
+      </form>
+      <!-- 4. TodoアプリのメインとなるTodoリスト -->
+      <div id="js-todo-list" class="todo-list">
+        <!-- 動的に更新されるTodoリスト -->
+      </div>
+      <footer class="footer">
+        <!-- 5. Todoアイテム数の表示 -->
+        <span id="js-todo-count"></span>
+      </footer>
+    </div>
+    <script src="./index.js" type="module"></script>
+  </body>
+</html>
