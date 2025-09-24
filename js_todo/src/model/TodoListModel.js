@@ -1,7 +1,7 @@
 import { EventNotify } from "../EventNotify.js";
 import { TodoItemModel } from "./TodoItemModel.js";
 
-export class TodolistModel extends EventNotify {
+export class TodoListModel extends EventNotify {
     #Items;
 
     /**  
@@ -20,7 +20,7 @@ export class TodolistModel extends EventNotify {
      * TodoItemModelの数を取得
      * @returns {number} TodoItemModelの数
      */
-    getTotalitem(){
+    getItemCount(){
         return this.#Items.length;
     }
 
@@ -28,7 +28,7 @@ export class TodolistModel extends EventNotify {
      * 完了したTodoItemModelの配列を取得
      * @returns {number} 完了したTodoItemModelの数
      */
-    getCompletedItem(){
+    getCompletedItemCount(){
         return this.#Items.filter(item => item.completed).length;
     }
 
@@ -36,7 +36,7 @@ export class TodolistModel extends EventNotify {
      * 完了していないTodolistItemsの配列を取得
      * @returns {number} 完了していないTodolistItemsの数
      */
-    getUncompletedItem(){
+    getUncompletedItemCount(){
         return this.#Items.filter(item => !item.completed).length;
     }
 
@@ -68,6 +68,8 @@ export class TodolistModel extends EventNotify {
             targetItem.title = title;
             targetItem.completed = completed;
             this.notify("change");
+        } else {
+            alert("更新するTodoItemModelが見つかりません");
         }
     }
 

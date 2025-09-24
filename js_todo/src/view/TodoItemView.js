@@ -59,13 +59,8 @@ export class TodoItemView {
         })
 
         cancelButtonElement.addEventListener("click", () => {
-            itemElement.style.display = "block";
-            editElement.style.display = "flex";
-            onUpdateTodo({
-                id: todoItem.id,
-                title: todoItem.title,
-                completed: todoItem.completed
-            });
+            itemElement.style.display = "flex";
+            editElement.style.display = "none";
         })
 
         return todoItemElement;

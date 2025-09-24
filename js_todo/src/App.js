@@ -1,14 +1,15 @@
-import { TodolistModel } from "./model/TodoListModel.js";
+import { TodoListModel } from "./model/TodoListModel.js";
 import { TodoListView } from "./view/TodoListView.js";
 import { TodoItemModel } from "./model/TodoItemModel.js";
 import { render } from "./view/html_utils.js";
 
 export class App {
-    #todolistModel = new TodolistModel();
+    #todolistModel = new TodoListModel();
     #todoListView = new TodoListView();
     #formElement = document.getElementById("js-form");
     #inputElement = document.getElementById("js-form-input");
     #containerElement = document.getElementById("js-todo-list");
+    #counterElement = document.getElementById("js-todo-count");
     
     /**
      * TodoItemModelを追加
@@ -24,10 +25,9 @@ export class App {
      */
     #handleSubmit = (event) => {
         event.preventDefault();
-        if (this.#inputElement.value.trim() === "") {
-            return;
-        }
-        this.#handleAdd(this.#inputElement.value);
+        const inputValue = this.#inputElement.value.trim();
+        if (inputValue === "") return;
+        this.#handleAdd(inputValue);
         this.#inputElement.value = "";
     }
 
@@ -47,20 +47,20 @@ export class App {
      * TodoItemModelを更新
      * @param {{id: number, title: string, completed: boolean}} 
      */
-    #handleUpdate({id, title,completed}){
-        this.#todolistModel.updateTodo({id, title, completed});
+    #handleUpdate({id, title, completed}){
+        const titleValue = title.trim();
+        if (titleValue === "") return;
+        this.#todolistModel.updateTodo({id, title: titleValue, completed});
     }
 
     /**
      * タスクカウンターを更新
      */
     #updateTaskCounter = () => {
-        const totalCount = this.#todolistModel.getTotalitem();
-        const completedCount = this.#todolistModel.getCompletedItem();
-        const uncompletedCount = this.#todolistModel.getUncompletedItem();
-        
-        const counterElement = document.getElementById("js-todo-count");
-        counterElement.textContent = `全てのタスク：${totalCount} 完了済み：${completedCount} 未完了：${uncompletedCount}`;
+        const totalCount = this.#todolistModel.getItemCount();
+        const completedCount = this.#todolistModel.getCompletedItemCount();
+        const uncompletedCount = this.#todolistModel.getUncompletedItemCount();
+        this.#counterElement.textContent = `全てのタスク：${totalCount} 完了済み：${completedCount} 未完了：${uncompletedCount}`;
     }
 
     /**
