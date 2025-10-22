@@ -44,6 +44,14 @@ export class TodoItemView {
 
         itemElement.style.display = editing ? "none" : "flex";
         editElement.style.display = editing ? "flex" : "none";
+        // 編集開始時に入力へフォーカス
+        if (editing) {
+            requestAnimationFrame(() => {
+                editElementInput.focus();
+                const len = editElementInput.value.length;
+                editElementInput.setSelectionRange(len, len);
+            });
+        }
 
         inputCheckboxElement.addEventListener("change", () => {
             onUpdateTodo({
