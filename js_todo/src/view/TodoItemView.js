@@ -6,9 +6,17 @@ export class TodoItemView {
      * @param {TodoItemModel} todoItem TodoItemModel
      * @param {function({id:number, completed: boolean})} onUpdateTodo チェックボックスの更新イベントリスナー
      * @param {function({id:number})} onDeleteTodo 削除ボタンのクリックイベントリスナー
+     * @param {function({id:number})} onStartEdit 編集開始イベントリスナー
+     * @param {function({id:number, title: string, completed: boolean})} onFinishEdit 編集完了イベントリスナー
+     * @param {function({id:number})} onCancelEdit 編集キャンセルイベントリスナー
+     * @param {function(number): boolean} isEditing 編集状態を判定する関数
      * @returns {Element}
      */
-    createElement(todoItem, { onUpdateTodo, onDeleteTodo }) {
+    createElement(
+        todoItem,
+        { onUpdateTodo, onDeleteTodo, onStartEdit, onFinishEdit, onCancelEdit, isEditing }
+    ) {
+        const editing = typeof isEditing === "function" ? isEditing(todoItem.id) : false;
         const todoItemElement = element
             `<li class="todo">
                 <div class="todo-item todo-display">
@@ -31,6 +39,9 @@ export class TodoItemView {
         const saveButtonElement = todoItemElement.querySelector(".save");
         const cancelButtonElement = todoItemElement.querySelector(".cancel");
 
+        itemElement.style.display = editing ? "none" : "flex";
+        editElement.style.display = editing ? "flex" : "none";
+
         inputCheckboxElement.addEventListener("change", () => {
             onUpdateTodo({
                 id: todoItem.id,
@@ -46,22 +57,21 @@ export class TodoItemView {
         });
 
         editButtonElement.addEventListener("click", () => {
-            itemElement.style.display = "none";
-            editElement.style.display = "flex";
+            onStartEdit?.({ id: todoItem.id });
         });
 
         saveButtonElement.addEventListener("click", () => {
-            onUpdateTodo({
+            const nextTitle = editElement.querySelector(".todo-edit-input").value;
+            onFinishEdit?.({
                 id: todoItem.id,
-                title: editElement.querySelector(".todo-edit-input").value,
+                title: nextTitle,
                 completed: todoItem.completed
             });
-        })
+        });
 
         cancelButtonElement.addEventListener("click", () => {
-            itemElement.style.display = "flex";
-            editElement.style.display = "none";
-        })
+            onCancelEdit?.({ id: todoItem.id });
+        });
 
         return todoItemElement;
     }

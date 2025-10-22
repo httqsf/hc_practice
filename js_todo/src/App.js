@@ -10,6 +10,7 @@ export class App {
     #inputElement = document.getElementById("js-form-input");
     #containerElement = document.getElementById("js-todo-list");
     #counterElement = document.getElementById("js-todo-count");
+    #editingIds = new Set();
     
     /**
      * TodoItemModelを追加
@@ -64,9 +65,45 @@ export class App {
     }
 
     /**
+     * 編集を開始
+     */
+    #handleEditStart = ({ id }) => {
+        this.#editingIds.add(id);
+        this.#renderView();
+    }
+
+    /**
+     * 編集を終了
+     */
+    #handleEditFinish = ({ id, title, completed }) => {
+        const titleValue = title.trim();
+        if (titleValue === "") {
+            this.#renderView();
+            return;
+        }
+        this.#editingIds.delete(id);
+        this.#handleUpdate({id, title: titleValue, completed});
+    }
+
+    /**
+     * 編集をキャンセル
+     */
+    #handleEditCancel = ({ id }) => {
+        this.#editingIds.delete(id);
+        this.#renderView();
+    }
+
+    /**
      * Todolistが変更されたときに呼ばれるハンドラー
      */
     #modelChangeHandler = () => {
+        this.#renderView();
+    }
+
+    /**
+     * ビューを描画
+     */
+    #renderView = () => {
         const todoItems = this.#todolistModel.getItems();
         const todoListElement = this.#todoListView.createElement(todoItems, {
             onUpdateTodo: ({id, title, completed}) => {
@@ -75,6 +112,16 @@ export class App {
             onDeleteTodo: ({id}) => {
                 this.#handleDelete({id});
             },
+            onStartEdit: ({id}) => {
+                this.#handleEditStart({id});
+            },
+            onFinishEdit: ({id, title, completed}) => {
+                this.#handleEditFinish({id, title, completed});
+            },
+            onCancelEdit: ({id}) => {
+                this.#handleEditCancel({id});
+            },
+            isEditing: (id) => this.#editingIds.has(id)
         });
         render(todoListElement, this.#containerElement);
         this.#updateTaskCounter();
