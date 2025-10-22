@@ -14,24 +14,27 @@ export class TodoItemView {
      */
     createElement(
         todoItem,
-        { onUpdateTodo, onDeleteTodo, onStartEdit, onFinishEdit, onCancelEdit, isEditing }
+        { onUpdateTodo, onDeleteTodo, onStartEdit, onFinishEdit, onCancelEdit, onDraftTitleChange, onDraftTitleDelete,isEditing, getDraftTitle }
     ) {
-        const editing = typeof isEditing === "function" ? isEditing(todoItem.id) : false;
+        const editing = isEditing(todoItem.id);
+        const draftTitle = getDraftTitle(todoItem.id);
+        const title = draftTitle ?? todoItem.title;
         const todoItemElement = element
             `<li class="todo">
                 <div class="todo-item todo-display">
                     <input type="checkbox" class="checkbox" ${todoItem.completed ? "checked" : ""}>
-                    <span class="todo-text">${todoItem.title}</span>
+                    <span class="todo-text">${title}</span>
                     <button class="edit">編集</button>
                     <button class="delete">削除</button>
                 </div>
                 <div class="todo-item todo-edit" style="display: none;">
-                    <input type="text" class="todo-edit-input" value="${todoItem.title}">
+                    <input type="text" class="todo-edit-input" value="${title}">
                     <button class="save">保存</button>
                     <button class="cancel">キャンセル</button>
                 </div>
             </li>`;
         const editElement = todoItemElement.querySelector(".todo-edit");
+        const editElementInput = todoItemElement.querySelector(".todo-edit-input");
         const itemElement = todoItemElement.querySelector(".todo-display");
         const inputCheckboxElement = todoItemElement.querySelector(".checkbox");
         const deleteButtonElement = todoItemElement.querySelector(".delete");
@@ -62,6 +65,7 @@ export class TodoItemView {
 
         saveButtonElement.addEventListener("click", () => {
             const nextTitle = editElement.querySelector(".todo-edit-input").value;
+            onDraftTitleDelete?.({ id: todoItem.id });
             onFinishEdit?.({
                 id: todoItem.id,
                 title: nextTitle,
@@ -69,7 +73,12 @@ export class TodoItemView {
             });
         });
 
+        editElementInput.addEventListener("input", () => {
+            onDraftTitleChange?.({ id: todoItem.id, title: editElementInput.value });
+        });
+
         cancelButtonElement.addEventListener("click", () => {
+            onDraftTitleDelete?.({ id: todoItem.id });
             onCancelEdit?.({ id: todoItem.id });
         });
 

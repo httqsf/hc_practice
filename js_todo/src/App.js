@@ -11,6 +11,7 @@ export class App {
     #containerElement = document.getElementById("js-todo-list");
     #counterElement = document.getElementById("js-todo-count");
     #editingIds = new Set();
+    #draftTitles = new Map();
     
     /**
      * TodoItemModelを追加
@@ -93,6 +94,14 @@ export class App {
         this.#renderView();
     }
 
+    #handleDraftTitleChange = ({id, title}) => {
+        this.#draftTitles.set(id, title)
+    }
+
+    #handleDraftTitleDelete = ({id}) => {
+        this.#draftTitles.delete(id)
+    }
+
     /**
      * Todolistが変更されたときに呼ばれるハンドラー
      */
@@ -121,7 +130,14 @@ export class App {
             onCancelEdit: ({id}) => {
                 this.#handleEditCancel({id});
             },
-            isEditing: (id) => this.#editingIds.has(id)
+            onDraftTitleChange: ({id, title}) => {
+                this.#handleDraftTitleChange({id, title});
+            },
+            onDraftTitleDelete: ({id}) => {
+                this.#handleDraftTitleDelete({id})
+            },
+            isEditing: (id) => this.#editingIds.has(id),
+            getDraftTitle: (id) => this.#draftTitles.get(id)
         });
         render(todoListElement, this.#containerElement);
         this.#updateTaskCounter();
