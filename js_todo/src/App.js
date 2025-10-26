@@ -4,7 +4,7 @@ import { TodoItemModel } from "./model/TodoItemModel.js";
 import { render } from "./view/html_utils.js";
 
 export class App {
-    #todolistModel = new TodoListModel();
+    #todoListModel = new TodoListModel();
     #todoListView = new TodoListView();
     #formElement = document.getElementById("js-form");
     #inputElement = document.getElementById("js-form-input");
@@ -18,7 +18,7 @@ export class App {
      * @param {string} title 
      */
     #handleAdd(title){
-        this.#todolistModel.addTodo(new TodoItemModel(title, false))
+        this.#todoListModel.addTodo(new TodoItemModel(title, false))
     }
 
     /**
@@ -41,7 +41,7 @@ export class App {
     #handleDelete({id}){
         // ビジネスロジック: 削除の確認
         if (confirm("本当によろしいですか？")) {
-            this.#todolistModel.deleteTodo({id});
+            this.#todoListModel.deleteTodo({id});
         }
     }
 
@@ -52,16 +52,16 @@ export class App {
     #handleUpdate({id, title, completed}){
         const titleValue = title.trim();
         if (titleValue === "") return;
-        this.#todolistModel.updateTodo({id, title: titleValue, completed});
+        this.#todoListModel.updateTodo({id, title: titleValue, completed});
     }
 
     /**
      * タスクカウンターを更新
      */
     #updateTaskCounter = () => {
-        const totalCount = this.#todolistModel.getItemCount();
-        const completedCount = this.#todolistModel.getCompletedItemCount();
-        const uncompletedCount = this.#todolistModel.getUncompletedItemCount();
+        const totalCount = this.#todoListModel.getItemCount();
+        const completedCount = this.#todoListModel.getCompletedItemCount();
+        const uncompletedCount = this.#todoListModel.getUncompletedItemCount();
         this.#counterElement.textContent = `全てのタスク：${totalCount} 完了済み：${completedCount} 未完了：${uncompletedCount}`;
     }
 
@@ -113,7 +113,7 @@ export class App {
      * ビューを描画
      */
     #renderView = () => {
-        const todoItems = this.#todolistModel.getItems();
+        const todoItems = this.#todoListModel.getItems();
         const todoListElement = this.#todoListView.createElement(todoItems, {
             onUpdateTodo: ({id, title, completed}) => {
                 this.#handleUpdate({id, title, completed});
@@ -147,7 +147,7 @@ export class App {
      * Appをマウント
      */
     mount(){
-        this.#todolistModel.onChange(this.#modelChangeHandler);
+        this.#todoListModel.onChange(this.#modelChangeHandler);
         this.#formElement.addEventListener("submit", this.#handleSubmit);
     }
 }
