@@ -1,0 +1,326 @@
+/* Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* Main Container */
+.todoapp {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px;
+  overflow: hidden;
+  animation: slideUp 0.6s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Form Styles */
+form {
+  padding: 30px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.new-todo {
+  flex: 1;
+  padding: 16px 20px;
+  font-size: 18px;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  outline: none;
+  font-family: inherit;
+}
+
+.new-todo:focus {
+  border-color: #667eea;
+  background: white;
+  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+}
+
+.new-todo::placeholder {
+  color: #999;
+  font-style: italic;
+}
+
+.add-button {
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  color: white;
+  border: none;
+  padding: 16px 24px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.add-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+}
+
+.add-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+/* Todo List */
+.todo-list {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+/* todo-displayとtodo-editに共通のスタイル */
+.todo-item {
+  width: 100%;
+  padding: 20px 30px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  transition: all 0.3s ease;
+  position: relative;
+  list-style: none;
+}
+
+.todo-item:hover {
+  background: rgba(102, 126, 234, 0.05);
+}
+
+.todo-item:last-child {
+  border-bottom: none;
+}
+
+/* Checkbox Styles */
+.checkbox {
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border: 2px solid #ddd;
+  border-radius: 50%;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.checkbox:checked {
+  background: #667eea;
+  border-color: #667eea;
+}
+
+.checkbox:checked::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+/* Todo Text */
+.todo-text {
+  flex: 1;
+  font-size: 16px;
+  line-height: 1.4;
+  color: #333;
+  transition: all 0.3s ease;
+}
+
+/* チェックボックスがチェックされた時に隣接するテキストに打ち消し線を適用 */
+.checkbox:checked ~ .todo-text {
+  color: #999;
+  opacity: 0.6;
+  text-decoration: line-through;
+}
+
+.edit {
+  background: transparent;
+  border: none;
+  color: #667eea;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 6px;
+  opacity: 1;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+}
+
+.edit:hover {
+  background: rgba(102, 126, 234, 0.05);
+  transform: scale(1.05);
+}
+
+/* Delete Button */
+.delete {
+  background: transparent;
+  border: none;
+  color: #ff6b6b;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 6px;
+  opacity: 1;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+}
+
+.delete:hover {
+  background: rgba(255, 107, 107, 0.1);
+  transform: scale(1.05);
+}
+
+/* Edit Input Field */
+.todo-edit-input {
+  flex: 1;
+  padding: 0;
+  font-size: 16px;
+  line-height: 1.4;
+  color: #333;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-family: inherit;
+  border-bottom: 2px solid #667eea;
+  border-radius: 0;
+  transition: all 0.3s ease;
+}
+
+.todo-edit-input:focus {
+  border-bottom-color: #764ba2;
+}
+
+/* Save Button */
+.save {
+  background: transparent;
+  border: none;
+  color: #28a745;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 6px;
+  opacity: 1;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+}
+
+.save:hover {
+  background: rgba(40, 167, 69, 0.05);
+  transform: scale(1.05);
+}
+
+/* Cancel Button */
+.cancel {
+  background: transparent;
+  border: none;
+  color: #6c757d;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 6px;
+  opacity: 1;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+}
+
+.cancel:hover {
+  background: rgba(108, 117, 125, 0.05);
+  transform: scale(1.05);
+}
+
+/* Footer */
+.footer {
+  padding: 20px 30px;
+  background: rgba(0, 0, 0, 0.02);
+  text-align: center;
+  color: #666;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .todoapp {
+    margin: 0;
+    border-radius: 0;
+    min-height: 100vh;
+  }
+  
+  form, .todo-list li, .todo-item, .footer {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  
+  /* モバイルでのボタンサイズ調整 */
+  .delete {
+    padding: 4px 8px;
+    font-size: 12px;
+  }
+  
+  .new-todo {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+}
+
+/* Custom scrollbar */
+.todo-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.todo-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.todo-list::-webkit-scrollbar-thumb {
+  background: rgba(102, 126, 234, 0.3);
+  border-radius: 3px;
+}
+
+.todo-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(102, 126, 234, 0.5);
+}
